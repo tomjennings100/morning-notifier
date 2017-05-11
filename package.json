@@ -1,0 +1,11 @@
+{
+  "name": "morning-notifier",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "dependencies": {
+    "bookshelf": "^0.10.3",
+    "knex": "^0.13.0",
+    "pg": "^6.1.5"
+  }
+}
