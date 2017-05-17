@@ -12,4 +12,5 @@ class Topic extends database.Model {
     }
 }
 
-module.exports = Note; 
+module.exports.Topic = Topic; 
+module.exports.Topics = database.Collection.extend({model:Topic}); 

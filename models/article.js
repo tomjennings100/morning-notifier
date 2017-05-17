@@ -6,7 +6,20 @@ class Article extends database.Model {
         return 'articles';
     }
 
+    get idAttribute(){
+        return 'url'; 
+    }
+
     feed() {
-        return this.belongsTo(Feed); 
+        return this.belongsTo(Feed);
     }
 }
+
+// const Article = database.Model.extend({
+//     tableName: 'articles', 
+//     feed: function(){return this.belongsTo(Feed)}
+// })
+
+module.exports.Article = Article; 
+
+module.exports.Articles = database.Collection.extend({model: Article})

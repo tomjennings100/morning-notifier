@@ -16,4 +16,5 @@ class Note extends database.Model {
     }
 }
 
-module.exports = Note; 
+module.exports.Note = Note; 
+module.exports.Notes = database.Collection.extend({model:Note}); 

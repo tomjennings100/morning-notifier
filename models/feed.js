@@ -16,4 +16,6 @@ class Feed extends database.Model {
     }
 }
 
-module.exports = Feed; 
+module.exports.Feed = Feed; 
+
+module.exports.Feeds = database.Collection.extend({model: Feed}); 

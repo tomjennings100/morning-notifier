@@ -11,4 +11,5 @@ class User extends database.Model {
     }
 }
 
-module.exports = User;
+module.exports.User = User;
+module.exports.Users = database.Collection.extend({model:User})
