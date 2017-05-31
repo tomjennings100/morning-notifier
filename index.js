@@ -3,36 +3,47 @@ const { Feed, Feeds } = require('./models/feed');
 const parseFeed = require('./lib/parse_feed');
 const sendToQueue = require('./lib/queue/send');
 
-Feeds.forge().fetch().then(feeds => {
-    feeds.forEach((feed) => {
-        processFeed(feed)
-            .then(() => {
-                setInterval(processFeed(feed), feed.get('interval'))
-            })
+init();
+
+async function init() {
+    const feeds = await Feeds.forge().fetch();
+    feeds.forEach(async feed => {
+        try {
+            const completedFeed = await processFeed(feed);
+            setInterval(() => { processFeed(feed) }, feed.get('interval'));
+        }
+        catch (e) {
+            return console.error(e)
+        }
     })
-}).catch(console.trace);
-
-
-function processFeed(feed) {
-   return parseFeed(feed.get('url'))
-        .then((items) => {
-            items.forEach(parsedItem => {
-                const { title, description, date, source, link } = parsedItem;
-                const item = {
-                    headline: title,
-                    body: description,
-                    feed_object: source,
-                    feed_id: feed.get('id'),
-                    published_date: date,
-                    url: link
-                };
-
-                Article.forge(item).upsert().then(a => {                     
-                    sendToQueue(a.get('url')); 
-                }).catch(console.trace);
-            })
-        }).catch(console.trace)
 }
 
 
+async function processFeed(feed) {
+    try {
+        const items = await parseFeed(feed.get('url'));
+    } 
+    catch (err) {
+        return new Error(`Error parsing feed: ${err.detail}`)
+    }
 
+    items.forEach(async parsedItem => {
+        const { title, description, date, source, link } = parsedItem;
+        const item = {
+            headline: title,
+            body: description,
+            feed_object: parsedItem,
+            feed_id: feed.get('id'),
+            published_date: date,
+            url: link
+        };
+
+        try {
+            const a = await Article.forge(item).upsert();
+            sendToQueue(a.get('url'));
+        } catch (err) {
+            console.log(err.detail)
+        }
+    });
+    return items;
+}

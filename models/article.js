@@ -11,9 +11,9 @@ class Article extends database.Model {
     }
 
     feed() {
-        return this.belongsTo(Feed);
+        return this.belongsTo('Feed');
     }
 }
 
-module.exports.Article = Article;
+module.exports.Article = database.model('article', Article);
 module.exports.Articles = database.Collection.extend({ model: Article });

@@ -1,14 +1,14 @@
 const { User } = require('./../../../models/user');
 const passportJwt = require('passport-jwt');
 const passport = require('passport');
-const secretOrKey = require('../../../config/token').secret; 
-
-console.log(secretOrKey); 
+const secretOrKey = require('../../../config/token').secret;  
 
 function extractJwt(req){
     rawAuth = req.get('Authorization')
-    console.log(rawAuth); 
-    return rawAuth.replace('JWT ', '')
+    console.log(rawAuth);
+    if(rawAuth) {
+        return rawAuth.replace('JWT ', '')
+    }
 }
 
 passport.use(new passportJwt.Strategy({

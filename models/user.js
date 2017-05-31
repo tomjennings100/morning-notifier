@@ -1,8 +1,10 @@
 const database = require('../lib/database.js');
-const Feed = require('./feed');
+
 const promisify = require('promisify-native');
 const bcrypt = require('bcrypt');
 
+require('./feed').Feed;
+require('./note').Note;
 class User extends database.Model {
 
     get tableName() {
@@ -10,7 +12,11 @@ class User extends database.Model {
     }
 
     feed() {
-        return this.hasMany(Feed)
+        return this.hasMany('Feed')
+    }
+
+    note() {
+        return this.hasMany('Note')
     }
 
     login(email, password) {
@@ -38,5 +44,5 @@ class User extends database.Model {
     }
 }
 
-module.exports.User = User;
+module.exports.User = database.model('User', User);
 module.exports.Users = database.Collection.extend({ model: User }); 

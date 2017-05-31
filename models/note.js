@@ -1,20 +1,20 @@
-const database = require('../lib/database.js'); 
-const User = require('./user'); 
-const Topic = require('./topic'); 
+const database = require('../lib/database.js');
+const { User } = require('./user');
+const {Topics}  = require('./topic');
 
 class Note extends database.Model {
     get tableName() {
-        return 'feeds'
+        return 'notes'
     }
 
     user() {
-        return this.belongsTo(User); 
+        return this.belongsTo('User');
     }
-    
+
     topic() {
-        return this.hasMany(Topic); 
+        return this.hasMany('Topic');
     }
 }
 
-module.exports.Note = Note; 
-module.exports.Notes = database.Collection.extend({model:Note}); 
+module.exports.Note = database.model('Note', Note);
+module.exports.Notes = database.Collection.extend({ model: Note }); 

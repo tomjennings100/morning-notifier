@@ -1,5 +1,5 @@
-const database = require('../lib/database.js'); 
-const User = require('./user'); 
+const database = require('../lib/database.js');
+const User = require('./user');
 const Article = require('./article')
 
 class Feed extends database.Model {
@@ -8,14 +8,14 @@ class Feed extends database.Model {
     }
 
     user() {
-        return this.belongsTo(User); 
+        return this.belongsTo('User');
     }
-    
+
     article() {
-        return this.hasMany(Article); 
+        return this.hasMany('Article');
     }
 }
 
-module.exports.Feed = Feed; 
+module.exports.Feed = database.model('Feed', Feed);
 
-module.exports.Feeds = database.Collection.extend({model: Feed}); 
+module.exports.Feeds = database.Collection.extend({ model: Feed }); 
