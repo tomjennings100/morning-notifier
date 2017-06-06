@@ -7,7 +7,9 @@ const user = require('./routes/user');
 const feed = require('./routes/feed'); 
 const note = require('./routes/note'); 
 const topic = require('./routes/topic'); 
+const cors = require('cors'); 
 
+app.use(cors());
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));

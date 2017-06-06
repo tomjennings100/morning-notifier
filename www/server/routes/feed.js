@@ -7,8 +7,11 @@ const auth = require('../lib/auth');
 const secret = require('../../../config/token').secret;
 
 router.get('/', auth.authenticate(), (req, res) => {
+    console.log('here');
     Feeds.forge().fetch().then(feeds => {
         res.json(feeds);
+    }).catch(e=>{
+        res.status(500).send('error fetching feeds')
     })
 });
 
@@ -19,14 +22,12 @@ router.get('/:id', auth.authenticate(), (req, res) => {
 })
 
 router.post('/', auth.authenticate(), (req, res) => {
-    const { user } = req;
-    const users_id = user.get('id');
     const { name, url } = req.body;
     if (!name || !body) {
         res.status(500).send('Feed must have a name and URL')
     }
     else {
-        Feed.forge({ name, url, users_id }).save().then(feed => {
+        Feed.forge({ name, url, id: req.user.get('id') }).save().then(feed => {
             res.json(feed);
         })
     }

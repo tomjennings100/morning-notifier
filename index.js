@@ -21,10 +21,11 @@ async function init() {
 
 async function processFeed(feed) {
     try {
-        const items = await parseFeed(feed.get('url'));
+        var items = await parseFeed(feed.get('url'));
+        console.log(items)
     } 
     catch (err) {
-        return new Error(`Error parsing feed: ${err.detail}`)
+        return new Error(`Error parsing feed: ${err}`)
     }
 
     items.forEach(async parsedItem => {

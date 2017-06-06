@@ -1,6 +1,6 @@
 const database = require('../lib/database.js');
 const { User } = require('./user');
-const {Topics}  = require('./topic');
+const { Topics } = require('./topic');
 
 class Note extends database.Model {
     get tableName() {

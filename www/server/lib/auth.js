@@ -17,7 +17,7 @@ passport.use(new passportJwt.Strategy({
     secretOrKey
 }, (jwtPayload, next) => {
     console.log('payload received', jwtPayload)
-    User.forge({ id: jwtPayload.id }).fetch().then(user => {
+    User.forge({ id: jwtPayload.sub }).fetch().then(user => {
         if (user) {
             next(null, user);
         }

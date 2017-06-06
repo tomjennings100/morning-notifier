@@ -31,6 +31,11 @@ router.post('/login', (req, res) => {
     })
 });
 
+router.post('/logout', (req, res)=>{
+    console.log(req.body.token)
+    res.status(200).send();
+})
+
 router.post('/signup', (req, res) => {
     const { email, password, name } = req.body;
     if (!email || !password) {
