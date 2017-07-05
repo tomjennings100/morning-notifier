@@ -22,7 +22,6 @@ async function init() {
 async function processFeed(feed) {
     try {
         var items = await parseFeed(feed.get('url'));
-        console.log(items)
     } 
     catch (err) {
         return new Error(`Error parsing feed: ${err}`)

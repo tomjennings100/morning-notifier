@@ -10,7 +10,7 @@ router.get('/', auth.authenticate(), (req, res) => {
     console.log('here');
     Feeds.forge().fetch().then(feeds => {
         res.json(feeds);
-    }).catch(e=>{
+    }).catch(e => {
         res.status(500).send('error fetching feeds')
     })
 });
@@ -22,25 +22,36 @@ router.get('/:id', auth.authenticate(), (req, res) => {
 })
 
 router.post('/', auth.authenticate(), (req, res) => {
-    const { name, url } = req.body;
-    if (!name || !body) {
+    const { name, url, interval } = req.body;
+    console.log(req.body);
+    console.log(name)
+    if (!name) {
         res.status(500).send('Feed must have a name and URL')
     }
     else {
-        Feed.forge({ name, url, id: req.user.get('id') }).save().then(feed => {
+        Feed.forge({ name, url, interval, users_id: req.user.get('id') }).save().then(feed => {
             res.json(feed);
         })
     }
 });
 
 router.delete('/:id', auth.authenticate(), (req, res) => {
-    Feed.forge({ id: req.params.id }).save().then(feed => {
-        if (req.user.get('users_id') === feed.get('users_id')) {
-            //delete here
-            res.status(200); 
+    const { id } = req.params
+    Feed.forge({ id }).fetch().then(feed => {
+        console.log(feed); 
+        if (!feed.get('id')) {
+            res.status(500).send(`Error: no feed with id ${id} found`)
         }
         else {
-            res.status(401); 
+            console.log(feed.get('users_id'), req.user.get('id'))
+            if (req.user.get('id') === feed.get('users_id')) {
+                Feed.forge({ id }).destroy().then(feed => {
+                    res.json(feed);
+                })
+            }
+            else {
+                res.status(401).send();
+            }
         }
     })
 })
