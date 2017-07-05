@@ -1,9 +1,10 @@
-#Overview
+# Morning Notifier
+# Overview
 
-##Concept
+## Concept
 This application takes a ingests content and allows users to create feeds of classes within it. The resultant feeds can be edited by the end user and then published to clients via an array of media.
 
-##Architecture
+## Architecture
 
 Ingestion nodes periodically scrape a table of predefined feeds (initially feeds, move on to scrapers). Each new item in a feed is pushed to a queue and run through a classification pluggable pipeline. Classification data is associated with the article *post hoc*. 
 
